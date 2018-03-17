@@ -1,23 +1,22 @@
 let url
-let neoInstanceDateArr
-let neoInstanceYear
-let neoInstanceMonth
-let neoInstanceDay
-let cachedInfo = []
+let neoInstanceDate
+const neoInstancePlanet = 'Juptr'
+let result = []
 const today = new Date()
-const yyyy = today.getFullYear()
-const mm = today.getMonth()+1
-const dd = today.getDate()
-let closest3 = []
+let dateArray = []
+let nextDate
+let objData
+let arr = []
+let afterdates
+let closestNeo
 
 document.addEventListener('DOMContentLoaded', function() {
 
   for (var i = 0; i < 921; i++) {
     url = `https://www.neowsapp.com/rest/v1/neo/browse?page=${i}&size=20`
     getData()
-    aggregateInfo()
   }
-  closestApproachDate()
+
 })
 
 function getData() {
@@ -27,51 +26,32 @@ function getData() {
 }
 
 function aggregateInfo(json) {
-  json.near_earth_objects.forEach(neo => {
+  json.near_earth_objects.filter(neo => {
+    let currentNeo = neo
     neo.close_approach_data.forEach(obj => {
-      neoInstanceDateArr = obj.close_approach_date.split("-")
-      neoInstanceYear = Number(neoInstanceDateArr[0])
-      neoInstanceMonth = Number(neoInstanceDateArr[1])
-      neoInstanceDay = Number(neoInstanceDateArr[2])
-      if (obj.orbiting_body === "Jupiter") {
-        if (neoInstanceYear > yyyy) {
-          obj.futureObject = true
-          cachedInfo.push(neo)
-        } else if (neoInstanceYear === yyyy) {
-          if (neoInstanceMonth > mm) {
-            obj.futureObject = true
-            cachedInfo.push(neo)
-          } else if (neoInstanceMonth === mm) {
-            if (neoInstanceDay >= dd) {
-              obj.futureObject = true
-              cachedInfo.push(neo)
-            }
-          }
-        }
+      neoInstanceDate = new Date(obj.close_approach_date)
+      if ((obj.orbiting_body === neoInstancePlanet) && (neoInstanceDate - today > 0)) {
+        let newObj = {...currentNeo, close_approach_data: obj}
+        arr.push(newObj)
       }
     })
   })
+  // closestApproachDate(arr)
 }
 
-function closestApproachDate() {
-  cachedInfo.forEach(neo => {
-    neo.close_approach_data.forEach(obj =>)
-  })
-}
-//
-// function displayInfo(json) {
-//   let displayNeos = document.getElementById('neos')
-//
-//   let jupiterNeos = json.near_earth_objects.forEach(neo => {
-//     function (i,n){
-//         return neo.close_approach_data.forEach(approach => {
-//           function (ind,nun){
-//             return approach.orbiting_body==="jupiter";
-//           }
-//         })
-//     });
-//
-//   json.near_earth_objects.forEach(neo => {
-//     displayNeos.innerHTML += `<li>${neo.name}</li>`
+// function closestApproachDate(arr) {
+//   arr.filter(neo => {
+//     let currentNeo = neo
+//     afterdates = neo.close_approach_data.filter(obj => {
+//       neoInstanceDate = new Date(obj.close_approach_date)
+//       if neoInstanceDate - today > 0 {
+//         let newObj = {...currentNeo, close_approach_data: obj}
+//       }
+//     })
+//       dateArray = obj.sort(function(a,b) {
+//         let dateA = new Date(a.close_approach_date)
+//         return dateA - today
+//       })
+//       nextDate = Math.min.apply(Math, ;
 //   })
 // }
