@@ -1,5 +1,6 @@
 let url
 let neoInstanceDate
+let timeFromNow
 const neoInstancePlanet = 'Juptr'
 let result = []
 const today = new Date()
@@ -9,6 +10,7 @@ let objData
 let arr = []
 let afterdates
 let closestNeo
+let dateTimeout
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -30,28 +32,27 @@ function aggregateInfo(json) {
     let currentNeo = neo
     neo.close_approach_data.forEach(obj => {
       neoInstanceDate = new Date(obj.close_approach_date)
-      if ((obj.orbiting_body === neoInstancePlanet) && (neoInstanceDate - today > 0)) {
-        let newObj = {...currentNeo, close_approach_data: obj}
+      timeFromNow = neoInstanceDate - today
+      if ((obj.orbiting_body === neoInstancePlanet) && (timeFromNow > 0)) {
+        let newObj = {...currentNeo, close_approach_data: obj, time_from_now: timeFromNow}
         arr.push(newObj)
       }
     })
   })
-  // closestApproachDate(arr)
+  dateTimeout = setTimeout(sortDates(arr), 20000)
 }
 
-// function closestApproachDate(arr) {
-//   arr.filter(neo => {
-//     let currentNeo = neo
-//     afterdates = neo.close_approach_data.filter(obj => {
-//       neoInstanceDate = new Date(obj.close_approach_date)
-//       if neoInstanceDate - today > 0 {
-//         let newObj = {...currentNeo, close_approach_data: obj}
-//       }
-//     })
-//       dateArray = obj.sort(function(a,b) {
-//         let dateA = new Date(a.close_approach_date)
-//         return dateA - today
-//       })
-//       nextDate = Math.min.apply(Math, ;
-//   })
-// }
+function sortDates(arr) {
+  arr.sort((a,b) => {
+    a.time_from_now - b.time_from_now
+  });
+  top3timeout = setTimeout(display3closest(arr), 20000)
+}
+
+function display3closest(arr) {
+  let top3 = arr.splice(0, 3)
+  let displayNeos = document.getElementById('neos')
+  top3.forEach(neo => {
+    displayNeos.innerHTML += `<li>Name: ${neo.name}</li>`
+  })
+}
