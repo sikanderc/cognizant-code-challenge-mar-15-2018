@@ -2,29 +2,22 @@ let url
 let neoInstanceDate
 let timeFromNow
 const neoInstancePlanet = 'Juptr'
-let result = []
 const today = new Date()
-let dateArray = []
-let nextDate
-let objData
 let arr = []
-let afterdates
-let closestNeo
-let dateTimeout
+let top3 = []
 
 document.addEventListener('DOMContentLoaded', function() {
-
-  for (var i = 0; i < 921; i++) {
-    url = `https://www.neowsapp.com/rest/v1/neo/browse?page=${i}&size=20`
-    getData()
-  }
-
+  display3closest()
 })
 
-function getData() {
-  fetch(url)
-  .then(res => res.json())
-  .then(json => aggregateInfo(json))
+async function fetchURL() {
+  for (var i = 0; i < 923; i++) {
+    url = `https://www.neowsapp.com/rest/v1/neo/browse?page=${i}&size=20`
+    let jsonFetch = await fetch(url)
+    .then(res => res.json())
+    .then(json => aggregateInfo(json))
+    console.log(i);
+  }
 }
 
 function aggregateInfo(json) {
@@ -35,22 +28,26 @@ function aggregateInfo(json) {
       timeFromNow = neoInstanceDate - today
       if ((obj.orbiting_body === neoInstancePlanet) && (timeFromNow > 0)) {
         let newObj = {...currentNeo, close_approach_data: obj, time_from_now: timeFromNow}
-        arr.push(newObj)
+        return arr.push(newObj)
       }
     })
   })
-  dateTimeout = setTimeout(sortDates(arr), 20000)
 }
 
-function sortDates(arr) {
+async function sortDates() {
+  const fetching = await fetchURL()
   arr.sort((a,b) => {
     a.time_from_now - b.time_from_now
-  });
-  top3timeout = setTimeout(display3closest(arr), 20000)
+  })
+  console.log("sorted");
 }
 
-function display3closest(arr) {
-  let top3 = arr.splice(0, 3)
+async function display3closest() {
+  const sorting = await sortDates()
+  console.log("displaying");
+  for (var j = 0; j < 3; j++) {
+    top3.push(arr.shift())
+  }
   let displayNeos = document.getElementById('neos')
   top3.forEach(neo => {
     displayNeos.innerHTML += `<li>Name: ${neo.name}</li>`
