@@ -45,11 +45,19 @@ async function sortDates() {
 async function display3closest() {
   const sorting = await sortDates()
   console.log("displaying");
+
   for (var j = 0; j < 3; j++) {
     top3.push(arr.shift())
   }
   let displayNeos = document.getElementById('neos')
+  displayNeos.innerHTML = ''
   top3.forEach(neo => {
-    displayNeos.innerHTML += `<li>Name: ${neo.name}</li>`
+    displayNeos.innerHTML += `<tr>
+    <td>${neo.name}</td>
+    <td>${neo.orbital_data.orbital_period}</td>
+    <td>${neo.estimated_diameter.feet.estimated_diameter_min}</td>
+    <td>${neo.orbital_data.inclination}</td>
+    <td>${neo.orbital_data.eccentricity}</td>
+  </tr>`
   })
 }
