@@ -6,21 +6,21 @@
   <title>Cognizant Code Challenge</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <style>
-    #neo_table_head, #neos {
+    #neos {
         border-collapse: collapse;
         width: 100%;
     }
 
-    #neo_table_head, #neos td, #neo_table_head, #neos th {
+    #neos td, #neos th {
         border: 1px solid #ddd;
         padding: 8px;
     }
 
-    #neo_table_head, #neos tr:nth-child(even){background-color: #f2f2f2;}
+    #neos tr:nth-child(even){background-color: #f2f2f2;}
 
-    #neo_table_head, #neos tr:hover {background-color: #ddd;}
+    #neos tr:hover {background-color: #ddd;}
 
-    #neo_table_head, #neos th {
+    #neos th {
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
@@ -38,15 +38,6 @@
       <div id="neo_card" class="card col-md-4">
           <h2>3 Near Earth Objects Orbitting Jupiter with the Closest Upcoming Approach Date</h2>
           <hr>
-          <table id="neo_table_head">
-            <tr>
-              <td>Name</td>
-              <td>Orbital Period</td>
-              <td>Minimum Diameter(in feet)</td>
-              <td>Inclination</td>
-              <td>Eccentricity</td>
-            </tr>
-          </table>
           <table id="neos">
             <td>Loading...</td>
           </table>
