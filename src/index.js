@@ -6,9 +6,10 @@ const today = new Date()
 let arr = []
 let top3 = []
 let res
+let littleNeo
 
 document.addEventListener('DOMContentLoaded', function() {
-  display3closest()
+  lowestEccentricity()
 })
 
 async function fetchURL() {
@@ -39,14 +40,11 @@ async function getMinTime() {
   const fetching = await fetchURL()
 
   for (var j = 0; j < 3; j++) {
-    res = Math.min.apply(Math, arr.map((o) => {
-      console.log(o);
-      console.log(o.timeFromNow);
-      o.timeFromNow
-    }))
+    res = Math.min.apply(null, arr.map(neo => Math.min(neo.time_from_now)))
     console.log(res);
-    let littleNeo = arr.splice(arr.indexOf(res))
-    top3.push(littleNeo)
+    littleNeo = arr.splice(arr.findIndex(neo => neo.time_from_now == res))
+    console.log(littleNeo[0]);
+    top3.push(littleNeo[0])
   }
   console.log("got top 3");
 }
@@ -74,26 +72,30 @@ async function display3closest() {
   })
 }
 
-// function lowestOrbitalPeriod() {
-//   let lowestOrb = Math.min.apply(Math, top3.map((o) => {
-//     o.orbital_period
-//   }))
-// }
-//
-// function smallestDiameter() {
-//   let smallestDiam = Math.min.apply(Math, top3.map((o) => {
-//     o.diameter
-//   }))
-// }
-//
-// function highestInclination() {
-//   let highestIncl = Math.max.apply(Math, top3.map((o) => {
-//     o.inclination
-//   }))
-// }
-//
-// function lowestEccentricity() {
-//   let lowestEccen = Math.min.apply(Math, top3.map((o) => {
-//     o.eccentricity
-//   }))
-// }
+async function lowestOrbitalPeriod() {
+  await display3closest()
+  let lowestOrbVal = Math.min.apply(Math, top3.map(neo => neo.orbital_period))
+  let lowestOrb = top3.find(neo => neo.orbital_period == lowestOrbVal)
+  document.getElementById("neo_card").getElementsByTagName("h4")[0].innerHTML += lowestOrb.name
+}
+
+async function smallestDiameter() {
+  await lowestOrbitalPeriod()
+  let smallestDiamVal = Math.min.apply(null, top3.map(neo => neo.diameter))
+  let smallestDiam = top3.find(neo => neo.diameter == smallestDiamVal)
+  document.getElementById("neo_card").getElementsByTagName("h4")[1].innerHTML += smallestDiam.name
+}
+
+async function highestInclination() {
+  await smallestDiameter()
+  let highestInclVal = Math.max.apply(Math, top3.map(neo => neo.inclination))
+  let highestIncl = top3.find(neo => neo.inclination == highestInclVal)
+  document.getElementById("neo_card").getElementsByTagName("h4")[2].innerHTML += highestIncl.name
+}
+
+async function lowestEccentricity() {
+  await highestInclination()
+  let lowestEccenVal = Math.min.apply(Math, top3.map(neo => neo.eccentricity))
+  let lowestEccen = top3.find(neo => neo.eccentricity == lowestEccenVal)
+  document.getElementById("neo_card").getElementsByTagName("h4")[3].innerHTML += lowestEccen.name
+}
