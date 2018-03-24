@@ -76,26 +76,26 @@ async function lowestOrbitalPeriod() {
   await display3closest()
   let lowestOrbVal = Math.min.apply(Math, top3.map(neo => neo.orbital_period))
   let lowestOrb = top3.find(neo => neo.orbital_period == lowestOrbVal)
-  document.getElementById("neo_card").getElementsByTagName("h4")[0].innerHTML += lowestOrb.name
+  document.getElementById("neo_card").getElementsByTagName("h4")[0].innerHTML += `Name: ${lowestOrb.name} ID: ${lowestOrb.id}`
 }
 
 async function smallestDiameter() {
   await lowestOrbitalPeriod()
   let smallestDiamVal = Math.min.apply(null, top3.map(neo => neo.diameter))
   let smallestDiam = top3.find(neo => neo.diameter == smallestDiamVal)
-  document.getElementById("neo_card").getElementsByTagName("h4")[1].innerHTML += smallestDiam.name
+  document.getElementById("neo_card").getElementsByTagName("h4")[1].innerHTML += `Name: ${smallestDiam.name} ID: ${smallestDiam.id}`
 }
 
 async function highestInclination() {
   await smallestDiameter()
   let highestInclVal = Math.max.apply(Math, top3.map(neo => neo.inclination))
   let highestIncl = top3.find(neo => neo.inclination == highestInclVal)
-  document.getElementById("neo_card").getElementsByTagName("h4")[2].innerHTML += highestIncl.name
+  document.getElementById("neo_card").getElementsByTagName("h4")[2].innerHTML += `Name: ${highestIncl.name} ID: ${highestIncl.id}`
 }
 
 async function lowestEccentricity() {
   await highestInclination()
   let lowestEccenVal = Math.min.apply(Math, top3.map(neo => neo.eccentricity))
   let lowestEccen = top3.find(neo => neo.eccentricity == lowestEccenVal)
-  document.getElementById("neo_card").getElementsByTagName("h4")[3].innerHTML += lowestEccen.name
+  document.getElementById("neo_card").getElementsByTagName("h4")[3].innerHTML += `Name: ${lowestEccen.name} ID: ${lowestEccen.id}`
 }
